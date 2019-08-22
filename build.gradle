@@ -46,3 +46,6 @@ shadowJar {
     mergeServiceFiles()
 }
 mainClassName = "perfunctory.secretary.Application"
+
+task stage(dependsOn: ['build', 'clean'])
+build.mustRunAfter clean
