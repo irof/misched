@@ -22,8 +22,8 @@ public class CalendarController {
     @Client("https://connpass.com/api/v1/")
     HttpClient connpassClient;
 
-    @Get(produces = "text/calendar")
-    public String index() {
+    @Get(uri = "{name}", produces = "text/calendar")
+    public String index(String name) {
         StringJoiner calendar =
                 new StringJoiner("\n", "BEGIN:VCALENDAR\n", "\nEND:VCALENDAR")
                         .add("VERSION:2.0")
@@ -36,7 +36,7 @@ public class CalendarController {
         String thisMonth = YearMonth.now().format(yearMonthFormatter);
         String nextMonth = YearMonth.now().plusMonths(1).format(yearMonthFormatter);
 
-        HttpRequest<?> request = HttpRequest.GET("event/?owner_nickname=irof&count=100&ym=" + thisMonth + "," + nextMonth)
+        HttpRequest<?> request = HttpRequest.GET("event/?owner_nickname=" + name + "&count=100&ym=" + thisMonth + "," + nextMonth)
                 .header("User-Agent", "Micronaut/1.2.0");
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("uuuuMMdd'T'HHmmssX");
