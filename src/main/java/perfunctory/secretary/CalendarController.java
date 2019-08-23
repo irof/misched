@@ -1,15 +1,14 @@
 package perfunctory.secretary;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.JsonNode;
-import io.micronaut.http.HttpRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
-import io.micronaut.http.client.HttpClient;
-import io.micronaut.http.client.annotation.Client;
 
-import javax.inject.Inject;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.time.YearMonth;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
@@ -18,12 +17,16 @@ import java.util.StringJoiner;
 @Controller("/calendar")
 public class CalendarController {
 
-    @Inject
-    @Client("https://connpass.com/api/v1/")
-    HttpClient connpassClient;
+    ConnpassClient connpassClient;
+    RedisRepository redisRepository;
+
+    CalendarController(ConnpassClient connpassClient, RedisRepository redisRepository) {
+        this.connpassClient = connpassClient;
+        this.redisRepository = redisRepository;
+    }
 
     @Get(uri = "{name}", produces = "text/calendar")
-    public String index(String name) {
+    public String index(String name) throws IOException {
         StringJoiner calendar =
                 new StringJoiner("\n", "BEGIN:VCALENDAR\n", "\nEND:VCALENDAR")
                         .add("VERSION:2.0")
@@ -32,20 +35,23 @@ public class CalendarController {
                         .add("X-WR-CALNAME:ふわっと予定")
                         .add("X-WR-TIMEZONE:UTC");
 
-        DateTimeFormatter yearMonthFormatter = DateTimeFormatter.ofPattern("uuuuMM");
-        String thisMonth = YearMonth.now().format(yearMonthFormatter);
-        String nextMonth = YearMonth.now().plusMonths(1).format(yearMonthFormatter);
+        String eventsString =
+                redisRepository.findEvent(name)
+                        .orElseGet(() -> {
+                            String events = connpassClient.events(name);
+                            redisRepository.record(name, events);
+                            return events;
+                        });
 
-        HttpRequest<?> request = HttpRequest.GET("event/?owner_nickname=" + name + "&count=100&ym=" + thisMonth + "," + nextMonth)
-                .header("User-Agent", "Micronaut/1.2.0");
-
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("uuuuMMdd'T'HHmmssX");
-
-        JsonNode response = connpassClient.toBlocking()
-                .retrieve(request, JsonNode.class);
+        ObjectMapper objectMapper = new ObjectMapper()
+                .setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE)
+                .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        JsonNode response = objectMapper.readTree(eventsString);
 
         JsonNode events = response.findValue("events");
         Iterator<JsonNode> elements = events.elements();
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("uuuuMMdd'T'HHmmssX");
 
         while (elements.hasNext()) {
             JsonNode event = elements.next();
