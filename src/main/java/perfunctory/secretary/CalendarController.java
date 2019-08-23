@@ -61,6 +61,7 @@ public class CalendarController {
                             //.add("DESCRIPTION:" + event.get("description").textValue().replaceAll("\n", "\\n"))
                             .add("LOCATION:" + event.get("place").textValue())
                             .add("URL:" + event.findPath("event_url").textValue())
+                            .add("GEO:" + event.findPath("lat").textValue() + ";" + event.findPath("lon").textValue())
                             .toString()
             );
         }
