@@ -65,7 +65,7 @@ public class CalendarController {
                             .add("SUMMARY:" + event.get("title").textValue())
                             // 長いんで一旦外しておく
                             //.add("DESCRIPTION:" + event.get("description").textValue().replaceAll("\n", "\\n"))
-                            .add("LOCATION:" + events.get("address") + " (" + event.get("place").textValue() + ")")
+                            .add("LOCATION:" + event.get("address").textValue() + " (" + event.get("place").textValue() + ")")
                             .add("URL:" + event.findPath("event_url").textValue())
                             .add("GEO:" + event.findPath("lat").textValue() + ";" + event.findPath("lon").textValue())
                             .toString()
