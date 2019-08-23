@@ -10,6 +10,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Singleton
 public class ConnpassClient {
@@ -26,10 +28,12 @@ public class ConnpassClient {
         logger.info("get event from connpass");
 
         YearMonth now = YearMonth.now();
-        String thisMonth = now.format(yearMonthFormatter);
-        String nextMonth = now.plusMonths(1).format(yearMonthFormatter);
+        String yearMonths = IntStream.rangeClosed(0, 2)
+                .mapToObj(i -> now.plusMonths(i))
+                .map(yearMonthFormatter::format)
+                .collect(Collectors.joining(","));
 
-        HttpRequest<?> request = HttpRequest.GET("event/?owner_nickname=" + name + "&count=100&ym=" + thisMonth + "," + nextMonth)
+        HttpRequest<?> request = HttpRequest.GET("event/?owner_nickname=" + name + "&count=100&ym=" + yearMonths)
                 .header("User-Agent", "Micronaut/1.2.0");
         return connpassClient.toBlocking()
                 .retrieve(request);
