@@ -1,8 +1,8 @@
 package perfunctory.secretary;
 
-import io.micronaut.context.annotation.Value;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.params.SetParams;
+import io.lettuce.core.SetArgs;
+import io.lettuce.core.api.StatefulRedisConnection;
+import io.lettuce.core.api.sync.RedisCommands;
 
 import javax.inject.Singleton;
 import java.util.Optional;
@@ -10,18 +10,20 @@ import java.util.Optional;
 @Singleton
 public class RedisRepository {
 
-    Jedis jedis;
+    StatefulRedisConnection<String, String> connection;
 
-    public RedisRepository(@Value("${redis.url}") String redisUrl) {
-        jedis = new Jedis(redisUrl);
+    public RedisRepository(StatefulRedisConnection<String, String> connection) {
+        this.connection = connection;
     }
 
     public void record(String key, String value) {
-        jedis.set(key, value, SetParams.setParams().ex(300));
+        RedisCommands<String, String> commands = connection.sync();
+        commands.set(key, value, SetArgs.Builder.ex(300));
     }
 
     Optional<String> findEvent(String key) {
-        String value = jedis.get(key);
+        RedisCommands<String, String> commands = connection.sync();
+        String value = commands.get(key);
         return Optional.ofNullable(value);
     }
 }
