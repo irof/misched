@@ -6,7 +6,6 @@ import io.micronaut.http.client.annotation.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -18,11 +17,12 @@ public class ConnpassClient {
 
     private static final Logger logger = LoggerFactory.getLogger(ConnpassClient.class);
 
-    @Inject
-    @Client("https://connpass.com/api/v1/")
     HttpClient connpassClient;
-
     DateTimeFormatter yearMonthFormatter = DateTimeFormatter.ofPattern("uuuuMM");
+
+    ConnpassClient(@Client("https://connpass.com/api/v1/") HttpClient connpassClient) {
+        this.connpassClient = connpassClient;
+    }
 
     String events(String name) {
         logger.info("get event from connpass");
