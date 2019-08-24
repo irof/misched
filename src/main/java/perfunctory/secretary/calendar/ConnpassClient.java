@@ -1,4 +1,4 @@
-package perfunctory.secretary;
+package perfunctory.secretary.calendar;
 
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.client.HttpClient;

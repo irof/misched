@@ -1,4 +1,4 @@
-package perfunctory.secretary;
+package perfunctory.secretary.calendar;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -18,11 +18,11 @@ import java.util.StringJoiner;
 public class CalendarController {
 
     ConnpassClient connpassClient;
-    RedisRepository redisRepository;
+    CalendarRepository calendarRepository;
 
-    CalendarController(ConnpassClient connpassClient, RedisRepository redisRepository) {
+    CalendarController(ConnpassClient connpassClient, CalendarRepository calendarRepository) {
         this.connpassClient = connpassClient;
-        this.redisRepository = redisRepository;
+        this.calendarRepository = calendarRepository;
     }
 
     @Get(uri = "{name}", produces = "text/calendar")
@@ -36,10 +36,10 @@ public class CalendarController {
                         .add("X-WR-TIMEZONE:UTC");
 
         String eventsString =
-                redisRepository.findEvent(name)
+                calendarRepository.findEvent(name)
                         .orElseGet(() -> {
                             String events = connpassClient.events(name);
-                            redisRepository.record(name, events);
+                            calendarRepository.record(name, events);
                             return events;
                         });
 

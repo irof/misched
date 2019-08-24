@@ -1,4 +1,4 @@
-package perfunctory.secretary;
+package perfunctory.secretary.calendar;
 
 import io.lettuce.core.SetArgs;
 import io.lettuce.core.api.StatefulRedisConnection;
@@ -8,15 +8,15 @@ import javax.inject.Singleton;
 import java.util.Optional;
 
 @Singleton
-public class RedisRepository {
+class CalendarRepository {
 
     StatefulRedisConnection<String, String> connection;
 
-    public RedisRepository(StatefulRedisConnection<String, String> connection) {
+    CalendarRepository(StatefulRedisConnection<String, String> connection) {
         this.connection = connection;
     }
 
-    public void record(String key, String value) {
+    void record(String key, String value) {
         RedisCommands<String, String> commands = connection.sync();
         commands.set(key, value, SetArgs.Builder.ex(300));
     }
