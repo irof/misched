@@ -35,13 +35,7 @@ public class CalendarController {
                         .add("X-WR-CALNAME:ふわっと予定")
                         .add("X-WR-TIMEZONE:UTC");
 
-        String eventsString =
-                calendarRepository.findEvent(name)
-                        .orElseGet(() -> {
-                            String events = connpassClient.events(name);
-                            calendarRepository.record(name, events);
-                            return events;
-                        });
+        String eventsString = connpassClient.events(name);
 
         ObjectMapper objectMapper = new ObjectMapper()
                 .setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE)
