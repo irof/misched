@@ -8,7 +8,8 @@ import io.micronaut.http.client.annotation.Client;
 @Client(value = "https://connpass.com/api/v1/")
 public interface ConnpassClient {
 
-    @Get("event/?owner_nickname={name}&count={count}&ym={yearMonths}")
+    // nicknameとowner_nicknameがOR条件っぽいのでこれでよさげ
+    @Get("event/?nickname={name}&owner_nickname={name}&count={count}&ym={yearMonths}")
     String events(@Header("User-Agent") String userAgent,
                   @QueryValue("name") String name,
                   @QueryValue("count") int count,
