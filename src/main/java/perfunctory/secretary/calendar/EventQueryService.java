@@ -1,9 +1,16 @@
 package perfunctory.secretary.calendar;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Singleton;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
@@ -16,14 +23,29 @@ public class EventQueryService {
 
     ConnpassClient connpassClient;
     CalendarRepository calendarRepository;
+
     DateTimeFormatter yearMonthFormatter = DateTimeFormatter.ofPattern("uuuuMM");
+    ObjectMapper objectMapper = new ObjectMapper()
+            .registerModule(new JSR310Module())
+            .setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE)
+            .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     EventQueryService(ConnpassClient connpassClient, CalendarRepository calendarRepository) {
         this.connpassClient = connpassClient;
         this.calendarRepository = calendarRepository;
     }
 
-    String events(String name) {
+    Events events(String name) {
+        try {
+            ConnpassResponse connpassResponse = objectMapper.readValue(eventsString(name), ConnpassResponse.class);
+            return connpassResponse.toEvents();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    String eventsString(String name) {
         return calendarRepository.findEvent(name)
                 .orElseGet(() -> {
                     String events = searchConnpass(name);
