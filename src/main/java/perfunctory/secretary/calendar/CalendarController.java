@@ -17,11 +17,11 @@ import java.util.StringJoiner;
 @Controller("/calendar")
 public class CalendarController {
 
-    ConnpassClient connpassClient;
+    EventQueryService eventQueryService;
     CalendarRepository calendarRepository;
 
-    CalendarController(ConnpassClient connpassClient, CalendarRepository calendarRepository) {
-        this.connpassClient = connpassClient;
+    CalendarController(EventQueryService eventQueryService, CalendarRepository calendarRepository) {
+        this.eventQueryService = eventQueryService;
         this.calendarRepository = calendarRepository;
     }
 
@@ -35,7 +35,7 @@ public class CalendarController {
                         .add("X-WR-CALNAME:ふわっと予定")
                         .add("X-WR-TIMEZONE:UTC");
 
-        String eventsString = connpassClient.events(name);
+        String eventsString = eventQueryService.events(name);
 
         ObjectMapper objectMapper = new ObjectMapper()
                 .setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE)
