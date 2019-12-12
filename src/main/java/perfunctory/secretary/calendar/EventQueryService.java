@@ -59,7 +59,7 @@ public class EventQueryService {
 
         YearMonth now = YearMonth.now();
         String yearMonths = IntStream.rangeClosed(0, 2)
-                .mapToObj(i -> now.plusMonths(i))
+                .mapToObj(now::plusMonths)
                 .map(yearMonthFormatter::format)
                 .collect(Collectors.joining(","));
 
