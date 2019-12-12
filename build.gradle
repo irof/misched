@@ -14,10 +14,10 @@ configurations {
 }
 
 dependencies {
-    annotationProcessor platform("io.micronaut:micronaut-bom:1.2.0")
+    annotationProcessor platform("io.micronaut:micronaut-bom:1.2.7")
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut:micronaut-validation"
-    implementation platform("io.micronaut:micronaut-bom:1.2.0")
+    implementation platform("io.micronaut:micronaut-bom:1.2.7")
     implementation "io.micronaut:micronaut-inject"
     implementation "io.micronaut:micronaut-validation"
     implementation "io.micronaut:micronaut-runtime"
@@ -26,7 +26,7 @@ dependencies {
     implementation "io.micronaut.configuration:micronaut-redis-lettuce"
     runtimeOnly "ch.qos.logback:logback-classic:1.2.3"
 
-    testAnnotationProcessor platform("io.micronaut:micronaut-bom:1.2.0")
+    testAnnotationProcessor platform("io.micronaut:micronaut-bom:1.2.7")
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
     testImplementation "org.junit.jupiter:junit-jupiter-api"
     testImplementation "io.micronaut.test:micronaut-test-junit5"
