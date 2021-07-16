@@ -61,6 +61,7 @@ public class Events {
                     .add("DTEND:" + format(endDateTime))
                     .add("SUMMARY:" + summary)
                     .add("LOCATION:" + location)
+                    .add("COMMENT:" + url)
                     .add("URL:" + url)
                     .toString();
         }
