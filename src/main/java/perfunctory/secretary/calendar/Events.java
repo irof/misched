@@ -62,6 +62,7 @@ public class Events {
                     .add("SUMMARY:" + summary)
                     .add("LOCATION:" + location)
                     .add("COMMENT:" + url)
+                    .add("DESCRIPTION:" + url)
                     .add("URL:" + url)
                     .toString();
         }
