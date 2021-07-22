@@ -12,7 +12,7 @@ micronaut {
     testRuntime("junit5")
     processing {
         incremental(true)
-        annotations("perfunctory.secretary.*")
+        annotations("me.irof.misched.*")
     }
 }
 dependencies {
@@ -24,7 +24,7 @@ dependencies {
 }
 
 application {
-    mainClass.set("perfunctory.secretary.Application")
+    mainClass.set("me.irof.misched.Application")
 }
 
 java {

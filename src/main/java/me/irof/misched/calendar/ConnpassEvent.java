@@ -1,4 +1,4 @@
-package perfunctory.secretary.calendar;
+package me.irof.misched.calendar;
 
 import java.time.OffsetDateTime;
 
@@ -16,7 +16,7 @@ public class ConnpassEvent {
 
     Events.Event toEvent() {
         return new Events.Event(
-                "perfunctory-secretary@connpass:" + event_id,
+                "misched@connpass:" + event_id,
                 updated_at,
                 started_at,
                 ended_at,

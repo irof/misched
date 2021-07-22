@@ -1,4 +1,4 @@
-package perfunctory.secretary.calendar;
+package me.irof.misched.calendar;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;

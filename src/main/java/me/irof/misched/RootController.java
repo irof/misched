@@ -1,4 +1,4 @@
-package perfunctory.secretary;
+package me.irof.misched;
 
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;

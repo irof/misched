@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -jar build/libs/perfunctory-secretary-all.jar
+web: java $JAVA_OPTS -jar build/libs/misched-all.jar

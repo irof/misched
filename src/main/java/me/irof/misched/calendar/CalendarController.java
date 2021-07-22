@@ -1,4 +1,4 @@
-package perfunctory.secretary.calendar;
+package me.irof.misched.calendar;
 
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;

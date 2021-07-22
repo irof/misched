@@ -1,4 +1,4 @@
-package perfunctory.secretary.calendar;
+package me.irof.misched.calendar;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -21,7 +21,7 @@ public class Events {
         StringJoiner calendar =
                 new StringJoiner("\n", "BEGIN:VCALENDAR\n", "\nEND:VCALENDAR")
                         .add("VERSION:2.0")
-                        .add("PRODID:-//irof//perfunctory-secretary//EN")
+                        .add("PRODID:-//irof//misched")
                         .add("METHOD:PUBLISH")
                         .add("X-WR-CALNAME:ふわっと予定")
                         .add("X-WR-TIMEZONE:UTC");

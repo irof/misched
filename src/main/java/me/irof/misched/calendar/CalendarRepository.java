@@ -1,4 +1,4 @@
-package perfunctory.secretary.calendar;
+package me.irof.misched.calendar;
 
 import io.lettuce.core.SetArgs;
 import io.lettuce.core.api.StatefulRedisConnection;
