@@ -8,6 +8,6 @@ public class RootController {
 
     @Get
     String index() {
-        return "welcome";
+        return "index of misched";
     }
 }
