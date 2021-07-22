@@ -1,8 +1,8 @@
-# perfunctory-secretary
+# Misched
 
 なんかしてくれそうな子。
 
-demo: https://perfunctory-secretary.herokuapp.com/
+demo: https://misched.herokuapp.com/
 
 ## やってくれること
 
