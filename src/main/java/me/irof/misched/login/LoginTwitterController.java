@@ -68,6 +68,7 @@ public class LoginTwitterController {
             session.clear();
             // アカウントを入れておく
             session.put("account", "twitter:" + user.getId());
+            session.put("twitterScreenName", user.getScreenName());
 
             return HttpResponse.temporaryRedirect(HttpResponse.uri("/"));
         } catch (TwitterException e) {

@@ -22,6 +22,7 @@ dependencies {
     implementation("io.micronaut:micronaut-validation")
     implementation("io.micronaut:micronaut-session")
     implementation("io.micronaut.redis:micronaut-redis-lettuce")
+    implementation("io.micronaut.views:micronaut-views-thymeleaf")
 
     implementation("org.twitter4j:twitter4j-core:4.0.7")
 }

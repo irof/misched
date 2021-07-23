@@ -1,2 +1,9 @@
 redis:
   uri: ${redis.url}
+
+micronaut:
+  router:
+    static-resources:
+      default:
+        paths: classpath:static
+        mapping: /static/**
